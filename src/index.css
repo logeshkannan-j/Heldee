@@ -1,0 +1,232 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Instrument Serif", serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* HELDEE brand: deep navy-blue (matching the hero video's night-sky
+     tone) / electric blue / cyan / white / subtle orange — brightened */
+  --background: 212 58% 13%;
+  --foreground: 220 35% 99%;
+  --muted: 210 40% 20%;
+  --muted-foreground: 216 24% 76%;
+  --primary: 0 0% 100%;
+  --primary-foreground: 210 55% 8%;
+  --secondary: 210 42% 19%;
+  --secondary-foreground: 220 30% 99%;
+  --accent: 210 42% 19%;
+  --accent-foreground: 220 30% 99%;
+  --border: 210 32% 28%;
+  --input: 210 32% 28%;
+  --ring: 199 92% 62%;
+  --cyan: 190 90% 62%;
+  --orange: 26 85% 64%;
+  --radius: 0.75rem;
+}
+
+* { border-color: hsl(var(--border)); }
+body {
+  margin: 0;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.01);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+@keyframes fade-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-rise { animation: fade-rise 0.8s ease-out both; }
+.animate-fade-rise-delay { animation: fade-rise 0.8s ease-out 0.2s both; }
+.animate-fade-rise-delay-2 { animation: fade-rise 0.8s ease-out 0.4s both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-rise, .animate-fade-rise-delay, .animate-fade-rise-delay-2 { animation: none; }
+}
+
+/* ---------- Gradient / accent text ---------- */
+.text-gradient {
+  background: linear-gradient(120deg, hsl(var(--cyan)) 0%, hsl(199 95% 68%) 45%, hsl(var(--orange)) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px hsla(var(--cyan), 0.45)) drop-shadow(0 0 36px hsla(var(--cyan), 0.2));
+}
+
+/* ---------- Glowing headline text — soft neon-style text-shadow, for
+   headings that should feel lit rather than flat white ---------- */
+.glow-text {
+  text-shadow:
+    0 0 12px hsla(0, 0%, 100%, 0.35),
+    0 0 32px hsla(var(--cyan), 0.25);
+}
+
+/* ---------- Film grain overlay, sits above everything, ignores clicks ---------- */
+.grain-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Static gradient mesh removed — replaced by the animated canvas background
+   in components/ui/AnimatedBackground.tsx, which now provides the site's
+   single continuous backdrop instead of a flat radial gradient. */
+
+/* ---------- Scroll reveal — cinematic: rack-focus + rise, not just fade ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(36px) scale(0.97);
+  filter: blur(6px);
+  transition:
+    opacity 0.9s cubic-bezier(.16,.8,.24,1),
+    transform 0.9s cubic-bezier(.16,.8,.24,1),
+    filter 0.9s cubic-bezier(.16,.8,.24,1);
+  will-change: opacity, transform, filter;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; filter: none; transition: none; }
+}
+
+/* ---------- Cinematic vignette — subtle framing, sits above the animated bg ---------- */
+.vignette {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  background:
+    radial-gradient(120% 85% at 50% 45%, transparent 55%, hsla(212, 58%, 9%, 0.45) 100%);
+}
+
+/* ---------- Glow accent line under eyebrow / section labels ---------- */
+.glow-line {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+.glow-line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1.5px;
+  width: 32px;
+  background: linear-gradient(90deg, hsl(var(--cyan)), transparent);
+  box-shadow: 0 0 8px hsla(var(--cyan), 0.7);
+}
+
+/* ---------- Ken Burns — slow continuous zoom, used on the hero video ---------- */
+@keyframes ken-burns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.12); }
+}
+.ken-burns {
+  animation: ken-burns 24s ease-out forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ken-burns { animation: none; }
+}
+
+/* ---------- Thin glowing scroll-progress bar fixed to the top of the viewport ---------- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  z-index: 70;
+  background: linear-gradient(90deg, hsl(var(--cyan)), hsl(var(--orange)));
+  box-shadow: 0 0 10px hsla(var(--cyan), 0.8);
+  transform-origin: left;
+  width: 100%;
+}
+
+/* ---------- Tilt cards (JS sets --rx/--ry/--mx/--my via inline style) ---------- */
+.tilt-card {
+  --rx: 0deg;
+  --ry: 0deg;
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.35s cubic-bezier(.16,.8,.24,1), border-color 0.3s, box-shadow 0.3s;
+  will-change: transform;
+}
+.tilt-card:hover {
+  box-shadow: 0 30px 60px -25px hsla(var(--cyan), 0.25);
+}
+.tilt-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), hsla(var(--cyan), 0.12), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.tilt-card:hover::after { opacity: 1; }
+
+/* ---------- Animated underline for nav / eyebrow labels ---------- */
+.underline-grow {
+  position: relative;
+}
+.underline-grow::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 1px;
+  width: 0%;
+  background: hsl(var(--cyan));
+  transition: width 0.35s ease;
+}
+.underline-grow:hover::after { width: 100%; }
+
+/* ---------- Custom scrollbar ---------- */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: hsl(var(--background)); }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 10px; border: 2px solid hsl(var(--background)); }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--cyan) / 0.5); }
+
+::selection { background: hsl(var(--cyan) / 0.3); color: hsl(var(--foreground)); }
+
+/* ---------- Animated marquee for the workbench connector glow ---------- */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0px hsla(var(--cyan), 0); }
+  50% { box-shadow: 0 0 22px hsla(var(--cyan), 0.45); }
+}
+.pulse-glow { animation: pulse-glow 2.4s ease-in-out infinite; }
