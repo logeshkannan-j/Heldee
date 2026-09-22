@@ -38,6 +38,47 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ==========================================================================
+   Consistent, professional typography scale for mobile.
+   Different sections use different Tailwind heading sizes (text-8xl,
+   text-7xl, text-6xl, text-5xl, text-4xl, text-3xl) which is why headings
+   felt inconsistently large/small across the site on phones. This overrides
+   all of them to a single, controlled scale on small screens only — desktop
+   sizing (set inline per component) is untouched.
+   ========================================================================== */
+@media (max-width: 640px) {
+  h1.text-8xl, h1.text-7xl, .text-8xl, .text-7xl {
+    font-size: clamp(2.25rem, 9vw, 3rem) !important;
+    line-height: 1.08 !important;
+  }
+  h2.text-6xl, h2.text-5xl, .text-6xl, .text-5xl {
+    font-size: clamp(1.85rem, 7.5vw, 2.25rem) !important;
+    line-height: 1.15 !important;
+  }
+  h3.text-4xl, .text-4xl {
+    font-size: clamp(1.5rem, 6.5vw, 1.75rem) !important;
+    line-height: 1.2 !important;
+  }
+  .text-3xl {
+    font-size: clamp(1.35rem, 5.5vw, 1.5rem) !important;
+    line-height: 1.25 !important;
+  }
+  /* Body copy: one consistent readable size instead of each section's own sm/base/lg mix */
+  p, .text-lg, .text-base {
+    font-size: 1rem !important;
+    line-height: 1.65 !important;
+  }
+  .text-sm {
+    font-size: 0.9rem !important;
+    line-height: 1.55 !important;
+  }
+  /* Consistent horizontal breathing room on every section */
+  section {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+  }
+}
+
 .liquid-glass {
   background: rgba(255, 255, 255, 0.01);
   background-blend-mode: luminosity;
@@ -101,11 +142,8 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Static gradient mesh removed — replaced by the animated canvas background
-   in components/ui/AnimatedBackground.tsx, which now provides the site's
-   single continuous backdrop instead of a flat radial gradient. */
-
-/* ---------- Scroll reveal — cinematic: rack-focus + rise, not just fade ---------- */
+/* ---------- Scroll reveal — kept for reference; Reveal.tsx no longer applies
+   this class, so it has no effect unless something else opts in ---------- */
 .reveal {
   opacity: 0;
   transform: translateY(36px) scale(0.97);
