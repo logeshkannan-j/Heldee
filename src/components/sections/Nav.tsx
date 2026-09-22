@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 
 const links = [
@@ -11,6 +12,24 @@ const links = [
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
+
+  const mobileMenu = (
+    <div
+      className={`fixed inset-0 z-[999] flex flex-col justify-center gap-8 bg-background px-10 transition-transform duration-300 ${
+        open ? "translate-x-0" : "translate-x-full"
+      }`}
+    >
+      <button className="absolute right-6 top-6 rounded-lg border border-border px-3 py-2 text-xs text-foreground" onClick={() => setOpen(false)}>
+        CLOSE
+      </button>
+      {links.map((l) => (
+        <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="font-display text-4xl">
+          {l.label}
+        </a>
+      ))}
+    </div>
+  );
+
   return (
     <>
       <nav className="relative z-20 mx-auto flex max-w-7xl items-center justify-between px-6 py-6 md:px-8">
@@ -36,20 +55,7 @@ export default function Nav() {
           </button>
         </div>
       </nav>
-      <div
-        className={`fixed inset-0 z-50 flex flex-col justify-center gap-8 bg-background px-10 transition-transform duration-300 ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <button className="absolute right-6 top-6 rounded-lg border border-border px-3 py-2 text-xs text-foreground" onClick={() => setOpen(false)}>
-          CLOSE
-        </button>
-        {links.map((l) => (
-          <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="font-display text-4xl">
-            {l.label}
-          </a>
-        ))}
-      </div>
+      {typeof document !== "undefined" && createPortal(mobileMenu, document.body)}
     </>
   );
 }
