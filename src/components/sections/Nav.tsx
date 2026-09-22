@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const links = [
-  { href: "#work", label: "Work" },
-  { href: "#services", label: "Services" },
-  { href: "#pricing", label: "Pricing" },
-  { href: "#about", label: "About" },
-  { href: "#contact", label: "Contact" },
+  { href: "/work", label: "Work" },
+  { href: "/services", label: "Services" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Nav() {
@@ -23,9 +24,9 @@ export default function Nav() {
         CLOSE
       </button>
       {links.map((l) => (
-        <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="font-display text-4xl">
+        <Link key={l.href} to={l.href} onClick={() => setOpen(false)} className="font-display text-4xl">
           {l.label}
-        </a>
+        </Link>
       ))}
     </div>
   );
@@ -33,21 +34,23 @@ export default function Nav() {
   return (
     <>
       <nav className="relative z-20 mx-auto flex max-w-7xl items-center justify-between px-6 py-6 md:px-8">
-        <a href="#home" className="flex items-center gap-2.5 font-mono text-sm tracking-wide text-foreground">
+        <Link to="/" className="flex items-center gap-2.5 font-mono text-sm tracking-wide text-foreground">
           <img src="/logo.png" alt="HELDEE" className="h-8 w-8 rounded-md object-cover" />
           HELDEE TECH SOLUTIONS
-        </a>
+        </Link>
         <div className="hidden items-center gap-8 md:flex">
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="underline-grow text-sm text-muted-foreground transition-colors hover:text-foreground">
+            <Link key={l.href} to={l.href} className="underline-grow text-sm text-muted-foreground transition-colors hover:text-foreground">
               {l.label}
-            </a>
+            </Link>
           ))}
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="glass" size="nav" className="hidden sm:inline-flex" onClick={() => (window.location.hash = "#contact")}>
-            Start a Project
-          </Button>
+          <Link to="/contact">
+            <Button variant="glass" size="nav" className="hidden sm:inline-flex">
+              Start a Project
+            </Button>
+          </Link>
           <button className="text-foreground md:hidden" onClick={() => setOpen(true)} aria-label="Open menu">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M3 6h18M3 12h18M3 18h18" />
