@@ -1,7 +1,6 @@
 import { useSiteContent } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import Nav from "./Nav";
-import { useEffect, useRef } from "react";
 
 const VIDEO_SRC =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4";
@@ -9,29 +8,6 @@ const displayFont = { fontFamily: "'Instrument Serif', serif" };
 
 export default function Hero() {
   const { content } = useSiteContent();
-  const contentRef = useRef<HTMLDivElement | null>(null);
-  const videoWrapRef = useRef<HTMLDivElement | null>(null);
-
-  // Camera-like scroll behaviour: as the visitor scrolls past the hero, the
-  // video appears to pull back / darken (like a dolly-out) and the text
-  // drifts and fades — instead of just disappearing under the next section.
-  useEffect(() => {
-    function onScroll() {
-      const vh = window.innerHeight;
-      const progress = Math.min(1, Math.max(0, window.scrollY / vh));
-      if (contentRef.current) {
-        contentRef.current.style.transform = `translateY(${progress * 60}px)`;
-        contentRef.current.style.opacity = `${1 - progress * 1.1}`;
-      }
-      if (videoWrapRef.current) {
-        videoWrapRef.current.style.transform = `scale(${1 + progress * 0.06})`;
-        videoWrapRef.current.style.filter = `brightness(${1 - progress * 0.35})`;
-      }
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const heading = content?.hero_heading ?? "Digital products, built beyond ordinary.";
   const [line1, line2] = heading.split(",").length > 1
@@ -44,7 +20,7 @@ export default function Hero() {
 
   return (
     <div id="home" className="relative min-h-[78svh] w-full overflow-hidden bg-background">
-      <div ref={videoWrapRef} className="absolute inset-0 z-0 will-change-transform">
+      <div className="absolute inset-0 z-0">
         <video
           className="ken-burns h-full w-full object-cover"
           src={VIDEO_SRC}
@@ -61,7 +37,7 @@ export default function Hero() {
         <Nav />
       </div>
 
-      <div ref={contentRef} className="relative z-10 flex flex-col px-6 pb-6 pt-16 will-change-transform md:px-12">
+      <div className="relative z-10 flex flex-col px-6 pb-6 pt-16 md:px-12">
         <div className="flex items-start justify-between">
           <span className="font-mono text-xs leading-relaxed tracking-widest text-cyan">
             FREELANCE DEVELOPER

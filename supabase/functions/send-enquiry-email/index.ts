@@ -30,7 +30,11 @@ serve(async (req) => {
       method: "POST",
       headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        from: "HELDEE TECH SOLUTIONS <enquiries@yourdomain.com>",
+        // Using Resend's shared test sender since no custom domain is
+        // verified yet. Once you verify your own domain at
+        // https://resend.com/domains, change this to something like
+        // "HELDEE TECH SOLUTIONS <enquiries@yourrealdomain.com>".
+        from: "HELDEE TECH SOLUTIONS <onboarding@resend.dev>",
         to: NOTIFY_EMAIL,
         subject: `New project enquiry from ${record.name ?? "a visitor"}`,
         text: `Name: ${record.name}\nEmail: ${record.email}\nPhone: ${record.phone ?? "—"}\nProject type: ${record.project_type ?? "—"}\nBudget: ${record.budget ?? "—"}\nTimeline: ${record.timeline ?? "—"}\n\n${record.description ?? ""}`,
